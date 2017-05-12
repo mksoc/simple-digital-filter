@@ -21,17 +21,18 @@ architecture structure of tb_top_module is
               data_out: out std_logic_vector(7 downto 0));
     end component;
     
-    -- component checker is
-        -- port (input_A: in integer;
-              -- input_B: in integer;
-              -- hw_sum: in integer;
-              -- error: out std_logic);
-    -- end component;
+    component data_fetch is
+        port (clock: in std_logic;
+              enable: in std_logic;
+              data_in: in std_logic_vector(7 downto 0));
+    end component;
     
     component a_simple_digital_filter is
-        PORT ( DATA_IN                        : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-			START, clk, async_rst, sync_clr : IN STD_LOGIC;
-			DONE                            : OUT STD_LOGIC );
+        PORT (DATA_IN                         : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+              START, clk, async_rst, sync_clr : IN STD_LOGIC;
+		      DONE                            : OUT STD_LOGIC;
+              WR_B_ext                        : OUT STD_LOGIC; -- only for debugging purposes
+              DATA_IN_B_ext                   : OUT STD_LOGIC_VECTOR (7 DOWNTO 0)); 
     end component;
     
     -- signal declarations
@@ -39,10 +40,13 @@ architecture structure of tb_top_module is
     signal rstn_internal, reset: std_logic;
     signal start_internal, done_internal: std_logic;
     signal data_in_internal: std_logic_vector(7 downto 0);
+    signal wr_B_int: std_logic;
+    signal data_out_int: std_logic_vector(7 downto 0);
     
 begin
+    -- signal assignments
     reset <= not rstn_internal;
-    
+   
     -- component instantiations
     clk0: clk_gen port map (clk => clk_internal,
                             rstn => rstn_internal,
@@ -58,6 +62,12 @@ begin
                                               clk => clk_internal,
                                               async_rst => reset,
                                               sync_clr => '0',
-                                              DONE => done_internal);
+                                              DONE => done_internal,
+                                              WR_B_ext => wr_B_int,
+                                              DATA_IN_B_ext => data_out_int);
+                                              
+    fetch: data_fetch port map (clock => clk_internal,
+                                enable => wr_B_int,
+                                data_in => data_out_int);
                                               
 end structure;

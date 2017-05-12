@@ -16,7 +16,7 @@ architecture behavior of data_gen is
    
 begin
     read_data: process(clk, rstn)
-        file in_file: text open read_mode is "testbench/tb_random_data.txt";
+        file in_file: text open read_mode is "testbench/random_data.txt";
         variable in_line: line;
         variable data_in: integer := 0;
         variable line_count: positive := 1;
