@@ -1,2 +1,6 @@
 # A simple digital filter 
-Progetto di un filtro digitale del terzo ordine per il corso di Elettronica dei Sistemi Digitali tenuto dal prof. Zamboni nell'anno 2016/17.
+Design of a 3rd order FIR digital filter in VHDL for the course "Digital systems electronics" held by Prof. Maurizio Zamboni in the year 2016/17, at [Politecnico di Torino](www.polito.it).
+
+The following is the difference equation of the filter:
+
+![equation](http://mathurl.com/k8nefzt.png)
