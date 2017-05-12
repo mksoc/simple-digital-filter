@@ -27,11 +27,24 @@ for i in range(len(input_list)):
 hw_list = [int(line.rstrip('\n')) for line in open("output_data.txt")]
 
 error = False
+sat_pos = 0
+sat_neg = 0
+normal = 0
 for i in range(len(hw_list)):
     if hw_list[i] != output_list[i]:
         print("Errore alla riga {}".format(i))
         error = True
         break
+    elif hw_list[i] == 127:
+        sat_pos += 1
+    elif hw_list[i] == -128:
+        sat_neg += 1
+    else:
+        normal += 1
         
 if error != True:
     print("Success!")
+    print("Numero di saturazioni: {}".format(sat_neg + sat_pos))
+    print("\ta 127: {}".format(sat_pos))
+    print("\ta - 128: {}".format(sat_neg))
+    print("Numero di campioni corretti: {}".format(normal))
