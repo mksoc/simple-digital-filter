@@ -3,12 +3,12 @@ USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
 
 ENTITY MEM IS
-	GENERIC ( N_addr : INTEGER := 10;
-				 N_par  : INTEGER := 8 ); 
-	PORT ( clk, CS, RD, WR : IN STD_LOGIC;
-	       ADDR : IN STD_LOGIC_VECTOR ( N_addr-1 DOWNTO 0 );
-			 DATA_IN : IN STD_LOGIC_VECTOR ( N_par-1 DOWNTO 0 );
-			 DATA_OUT : OUT STD_LOGIC_VECTOR ( N_par-1 DOWNTO 0 ) );
+	GENERIC (N_addr : INTEGER := 10;
+			 N_par  : INTEGER := 8); 
+	PORT (clk, CS, RD, WR : IN STD_LOGIC;
+	      ADDR : IN STD_LOGIC_VECTOR ( N_addr-1 DOWNTO 0 );
+		  DATA_IN : IN STD_LOGIC_VECTOR ( N_par-1 DOWNTO 0 );
+	      DATA_OUT : OUT STD_LOGIC_VECTOR ( N_par-1 DOWNTO 0 ));
 END MEM;
 
 ARCHITECTURE behaviour OF MEM IS

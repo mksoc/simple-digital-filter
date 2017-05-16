@@ -2,19 +2,19 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
 ENTITY b9RCA IS
-	PORT ( A, B            : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
-			 c_in            : IN STD_LOGIC;
-			 S               : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-			 c_out           : OUT STD_LOGIC ) ;
+	PORT (A, B            : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
+		  c_in            : IN STD_LOGIC;
+		  S               : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
+		  c_out           : OUT STD_LOGIC) ;
 END b9RCA;
 
-ARCHITECTURE behaviour OF b9RCA IS
+ARCHITECTURE structure OF b9RCA IS
 
 	SIGNAL C_PROP : STD_LOGIC_VECTOR(7 DOWNTO 0);
 	
 	COMPONENT full_adder IS
-		PORT ( a, b, c_in : IN STD_LOGIC;
-				 s, c_out   : OUT STD_LOGIC );
+		PORT (a, b, c_in : IN STD_LOGIC;
+			  s, c_out   : OUT STD_LOGIC);
 	END COMPONENT;
 
 BEGIN
@@ -27,5 +27,5 @@ BEGIN
 	FA6 : full_adder PORT MAP ( a => A(6) , b => B(6), c_in => C_PROP(5), s => S(6), c_out => C_PROP(6) );
 	FA7 : full_adder PORT MAP ( a => A(7) , b => B(7), c_in => C_PROP(6), s => S(7), c_out => C_PROP(7) );
 	FA8 : full_adder PORT MAP ( a => A(8) , b => B(8), c_in => C_PROP(7), s => S(8), c_out => c_out );
-END behaviour;
+END structure;
 			 
