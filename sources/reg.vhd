@@ -10,7 +10,7 @@ END reg;
 
 ARCHITECTURE behaviour OF reg IS
 BEGIN
-	PROCESS ( clock, async_rst )
+	PROCESS ( clock )
 	BEGIN
         IF ( clock'EVENT AND clock = '1' ) THEN
                 IF ( sync_clr = '0' ) THEN

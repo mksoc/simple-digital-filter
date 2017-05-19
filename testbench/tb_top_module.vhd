@@ -29,7 +29,7 @@ architecture structure of tb_top_module is
     
     component a_simple_digital_filter is
         PORT (DATA_IN                         : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-              START, clk, async_rst, sync_clr : IN STD_LOGIC;
+              START, clk, async_rst           : IN STD_LOGIC;
 		      DONE                            : OUT STD_LOGIC;
               WR_B_ext                        : OUT STD_LOGIC; -- only for debugging purposes
               DATA_IN_B_ext                   : OUT STD_LOGIC_VECTOR (7 DOWNTO 0)); 
@@ -45,7 +45,8 @@ architecture structure of tb_top_module is
     
 begin
     -- signal assignments
-    reset <= not rstn_internal;
+    reset <= not rstn_internal; -- needed beacuse the FSM gets an active high reset 
+                                -- while the generator gives an active low one
    
     -- component instantiations
     clk0: clk_gen port map (clk => clk_internal,
@@ -61,7 +62,6 @@ begin
                                               START => start_internal,
                                               clk => clk_internal,
                                               async_rst => reset,
-                                              sync_clr => '0',
                                               DONE => done_internal,
                                               WR_B_ext => wr_B_int,
                                               DATA_IN_B_ext => data_out_int);

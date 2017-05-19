@@ -3,10 +3,12 @@ USE ieee.std_logic_1164.all;
 
 ENTITY CU IS
 	PORT (clk, async_rst, start                         : IN STD_LOGIC;
-		  cnt_0, TC, sat_pos, sat_neg                   : IN STD_LOGIC; 
+          -- cnt_0 is the LSB of the count, we need for it to recognize 
+          -- if we are either in a even or odd cycle of the algorithm
+		  cnt_0, TC, sat_pos, sat_neg                   : IN STD_LOGIC;  
 		  CS_A, RD_A, WR_A, CS_B, RD_B, WR_B            : OUT STD_LOGIC;
 		  en_reg_0, en_reg_1, en_reg_2, en_reg_S, 
-			clr_reg_0, clr_reg_1, clr_reg_2, clr_reg_S 	: OUT STD_LOGIC;
+		    clr_reg_0, clr_reg_1, clr_reg_2, clr_reg_S 	: OUT STD_LOGIC;
 		  en_cnt, clr_cnt, sel_mux_0, sub_0, sub_1      : OUT STD_LOGIC;
 		  sel_mux_1, sel_mux_wr                         : OUT STD_LOGIC_VECTOR (1 DOWNTO 0);
 		  done                                          : OUT STD_LOGIC);
@@ -15,12 +17,12 @@ END CU;
 ARCHITECTURE states_behaviour OF CU IS
 
 	TYPE state_type IS (Reset, Idle, State_Done, Count, Sum1_p, Sum2_p, Sum3_p,
-						Sum1_d, Sum2_d, Sum3_d, Sat_neg_Y, Sat_pos_Y, Write_Y);
+						     Sum1_d, Sum2_d, Sum3_d, Sat_neg_Y, Sat_pos_Y, Write_Y);
 	SIGNAL PS, NS : state_type;
 
 BEGIN
 
-
+	-- process which defines the Next State. It varies according to the Present State and to the input values
 	NS_process : PROCESS ( PS, start, TC, cnt_0, sat_pos, sat_neg )
 		BEGIN
             CASE PS IS            
@@ -155,11 +157,12 @@ BEGIN
             END CASE;
 		END PROCESS;
 
-		
+	-- process that rules the State Updating, which depends only on the 
+    -- clock (sync update) and the reset (async update). 
 	PS_process : PROCESS ( clk, async_rst )
 		BEGIN
-			IF ( async_rst = '0' ) THEN
-				IF ( clk'EVENT AND clk = '1' ) THEN
+			IF ( async_rst = '0' ) THEN -- async updating
+				IF ( clk'EVENT AND clk = '1' ) THEN -- sync updating
 					PS <= NS;
 				END IF;
 			ELSE
@@ -167,10 +170,11 @@ BEGIN
 			END IF;
 		END PROCESS;
 		
-		
+	-- our CU is a Moore's Machine: output depends only on the PS and not on the input
 	OUTPUT_process : PROCESS ( PS )
 		BEGIN
-		    en_reg_0 <= '0';
+		-- default output value list
+		   en_reg_0 <= '0';
 			en_reg_1 <= '0';
 			en_reg_2 <= '0';
 			en_reg_S <= '1';
@@ -196,19 +200,20 @@ BEGIN
 				WHEN Reset => en_reg_S <= '0';
 							  en_cnt <= '0';
 							  clr_reg_0 <= '1';
-						      clr_reg_1 <= '1';
+						     clr_reg_1 <= '1';
 							  clr_reg_2 <= '1';
 							  clr_reg_S <= '1';
 							  clr_cnt <= '1';
 							  CS_A <= '0';
 							  CS_B <= '0';
 							  RD_A <= '0';
-								  
+				
+				-- IDLE introduced only for energy efficiency 
 				WHEN Idle => en_reg_S <= '0';
-						     en_cnt <= '0';
-						     CS_A <= '0';
-							 CS_B <= '0';
-							 RD_A <= '0';
+						      en_cnt <= '0';
+						      CS_A <= '0';
+							   CS_B <= '0';
+							   RD_A <= '0';
 								  
 				WHEN State_Done => en_reg_S <= '0';
 								   en_cnt <= '0';

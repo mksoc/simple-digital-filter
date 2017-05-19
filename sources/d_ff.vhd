@@ -16,5 +16,6 @@ BEGIN
 				ELSE
 					Q <= D;
 				END IF;
+            END IF;
 		END PROCESS;
 END behaviour;

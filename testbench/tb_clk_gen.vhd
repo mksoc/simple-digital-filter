@@ -14,10 +14,11 @@ architecture behavior of clk_gen is
 begin 
     clk_generation: process
     begin 
-        clk <= '1', '0' after T/2, '1' after T;
-        wait for T;
+        clk <= '1', '0' after T/2, '1' after T; -- generate one clock cycle
+        wait for T; -- repeat
     end process;
     
+    -- arbitrarily generate reset and start signals
     rstn <= '0', '1' after 120 ns;
     start <= '0', '1' after 270 ns;
     

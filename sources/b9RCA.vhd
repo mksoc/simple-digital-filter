@@ -9,15 +9,17 @@ ENTITY b9RCA IS
 END b9RCA;
 
 ARCHITECTURE structure OF b9RCA IS
-
+    -- signal declarations
 	SIGNAL C_PROP : STD_LOGIC_VECTOR(7 DOWNTO 0);
 	
+    -- component declarations
 	COMPONENT full_adder IS
 		PORT (a, b, c_in : IN STD_LOGIC;
 			  s, c_out   : OUT STD_LOGIC);
 	END COMPONENT;
 
 BEGIN
+    --component instantiations
 	FA0 : full_adder PORT MAP ( a => A(0) , b => B(0), c_in => c_in, s => S(0), c_out => C_PROP(0) );
 	FA1 : full_adder PORT MAP ( a => A(1) , b => B(1), c_in => C_PROP(0), s => S(1), c_out => C_PROP(1) );
 	FA2 : full_adder PORT MAP ( a => A(2) , b => B(2), c_in => C_PROP(1), s => S(2), c_out => C_PROP(2) );

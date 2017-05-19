@@ -1,7 +1,7 @@
 # Read file and generate input list
 input_list = [int(line.rstrip('\n')) for line in open("random_data.txt")]
 
-# Generate output list
+# Generate output list in software
 output_list = []
 
 for i in range(len(input_list)):
@@ -26,7 +26,7 @@ for i in range(len(input_list)):
 # Compare with hardware output
 hw_list = [int(line.rstrip('\n')) for line in open("output_data.txt")]
 
-error = False
+error = False # error flag
 sat_pos = 0
 sat_neg = 0
 normal = 0
@@ -41,7 +41,8 @@ for i in range(len(hw_list)):
         sat_neg += 1
     else:
         normal += 1
-        
+
+# Print stats        
 if error != True:
     print("Success!")
     print("Numero di saturazioni: {}".format(sat_neg + sat_pos))

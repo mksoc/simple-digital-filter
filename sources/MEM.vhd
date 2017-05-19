@@ -17,7 +17,8 @@ ARCHITECTURE behaviour OF MEM IS
 	SIGNAL CELL : CELLS_ARRAY;
 
 BEGIN
-    
+   
+	-- sync writing process
 	wr_beh : PROCESS ( clk )
 	BEGIN
 		IF ( clk'EVENT AND clk = '1' ) THEN
@@ -27,12 +28,13 @@ BEGIN
 		END IF;
 	END PROCESS;
 	
+	-- combinatorial reading
 	rd_beh : PROCESS ( CS, RD, ADDR )
 	BEGIN
 		IF ( CS = '1' AND RD = '1' ) THEN
 			DATA_OUT <= CELL( TO_INTEGER(UNSIGNED((ADDR))) );
 		ELSE
-			DATA_OUT <= "00000000";
+			DATA_OUT <= "00000000"; -- if CS or RD are '0', DATA_OUT is "00000000"
 		END IF;
 	END PROCESS;
 
